@@ -20,7 +20,7 @@ phases:
       - echo Working on creating the tar ball with the WAR and AppSpec file for CodeDeploy
       - mkdir appfiles
       - cd appfiles
-      - cp ../target/cmad-blog-project-advance-1.war .
+      - cp ../target/cmad-blog-project-advance.war .
       - cp ../appspec.yml .
       - ls -al
       - tar -zcvf ../target/cmad-blog-project-advance.tar.gz *.*
@@ -32,5 +32,5 @@ artifacts:
 # Use the individual files if you are using the CodeDeploy from CodePipeline
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there
 #    - appfiles/appspec.yml
-#    - appfiles/cmad-blog-project-advance-1.war
+#    - appfiles/cmad-blog-project-advance.war
   discard-paths: yes
