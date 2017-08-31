@@ -28,9 +28,9 @@ artifacts:
   files:
 # IMPORTANT
 # You have to use the tar.gz if you are manually executing CodeDeploy
-    - target/cmad-blog-project-advance.tar.gz
+#    - target/cmad-blog-project-advance.tar.gz
 # Use the individual files if you are using the CodeDeploy from CodePipeline
 # Reason is pipeline does not untar and errors out saying that the appspec file is not there
-#    - appfiles/appspec.yml
-#    - appfiles/cmad-blog-project-advance.war
+    - appfiles/appspec.yml
+    - appfiles/cmad-blog-project-advance.war
   discard-paths: yes
