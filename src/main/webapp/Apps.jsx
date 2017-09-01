@@ -19,6 +19,7 @@ import Blog from './src/components/Blog.jsx';
 import Comments from './src/components/Comments.jsx';
 import CreateBlog from './src/components/CreateBlog.jsx';
 import CreateComment from './src/components/CreateComment.jsx';
+import Pagination from './src/components/Pagination.jsx';
 
 class Apps extends React.Component {
     constructor(props) {
@@ -38,6 +39,7 @@ class Apps extends React.Component {
             <div>
                 < Header store = { this.state.store } />
                 < Banner store = { this.state.store } />
+                < Pagination store = { this.state.store } />
                 < Blogs store = { this.state.store } />
             </div>
         );

@@ -37,41 +37,31 @@ class Banner extends React.Component {
     }
 
     renderTabActive(title) {
-        console.warn("Render Active " + title)
         return (
             <li><div className="w3-btn w3-block w3-black w3-hover-black btn-default">{title}</div></li>
         );
     }
 
     renderTabInactive(title) {
-        console.warn("Render Inactive " + title)
         return (
             <li><div className="w3-btn w3-block w3-hover-black btn-default">{title}</div></li>
         );
     }
 
     renderTabs() {
-        var tabs = ['All', 'Authored', 'Commented'];
-
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
                 <ul className="nav nav-tabs">
-                    { tabs.map((tab, index) => { 
-                        if (tab === this.state.tab) {
-                            this.renderTabActive(tab)
-                        }
-                        else {
-                            this.renderTabInactive(tab) 
-                        }
-                    }
-                    ) }
+                    {this.renderTabActive('All')}
+                    {this.renderTabInactive('Authored')}
+                    {this.renderTabInactive('Commented')}
                 </ul>
             );
         }
         else {
             return (
                 <ul className="nav nav-tabs">
-                    { tabs.map((tab, index) => { (tab === this.state.tab)?this.renderTabActive(tab):this.renderTabInactive(tab) }) }
+                    {this.renderTabActive('All')}
                 </ul>
             );
         }    
@@ -82,9 +72,10 @@ class Banner extends React.Component {
             <div id="appBanner" className="panel panel-default">
                 <nav className="navbar navbar-default">
                     <div className="container-fluid">
-                        <div className="col-md-6">
+                        <div className="col-md-3">
                             {this.renderCreate()}
                         </div>
+                        <div className="col-md-3"></div>
                         <div className="col-md-6">
                             {this.renderTabs()}
                         </div>
