@@ -11,7 +11,7 @@ public interface BlogsDAO {
 
 	public List<Blog> readByCategory(String category);
 
-	public List<Blog> readAllBlogs();
+	public List<Blog> readAllBlogs(int offset, int count, String category);
 
 	public List<Blog> readByUserId(String userId);
 

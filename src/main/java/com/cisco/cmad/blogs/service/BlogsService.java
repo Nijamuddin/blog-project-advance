@@ -75,10 +75,10 @@ public class BlogsService implements Blogs {
 	}
 
 	@Override
-	public List<Blog> readAllBlogs() throws DataNotFoundException, BlogException {
+	public List<Blog> readAllBlogs(int offset, int count, String category) throws DataNotFoundException, BlogException {
 		 List<Blog> blogs = new ArrayList<Blog>();
 	        try {
-	            blogs = dao.readAllBlogs();
+	            blogs = dao.readAllBlogs(offset, count, category);
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            throw new BlogException();

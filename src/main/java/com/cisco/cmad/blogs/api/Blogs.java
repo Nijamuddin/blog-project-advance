@@ -2,6 +2,8 @@ package com.cisco.cmad.blogs.api;
 
 import java.util.List;
 
+import javax.ws.rs.QueryParam;
+
 public interface Blogs {
 
 	public void create(Blog blog) throws InvalidDataException, DuplicateDataException, BlogException;
@@ -12,7 +14,7 @@ public interface Blogs {
 
 	public List<Blog> readByCategory(String category) throws DataNotFoundException, BlogException;
 
-	public List<Blog> readAllBlogs() throws DataNotFoundException, BlogException;
+	public List<Blog> readAllBlogs(int offset, int count, String category) throws DataNotFoundException, BlogException;
 
 	public Blog read(long blogId) throws DataNotFoundException, BlogException;
 

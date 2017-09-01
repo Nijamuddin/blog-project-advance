@@ -1,16 +1,20 @@
-var URLBase = "http://192.168.99.100:8080/cmad-blog-project-advance/";
+var URLBase = "" //http://192.168.99.100:8080/cmad-blog-project-advance/";
 
 function getBlogs(callback) {
     var url = URLBase + "public/blogs";
 
     $.getJSON(url, function(blogs) {
+        var length = blogs.length;
         $.each(blogs, function(index, blog) {
             var countUrl = URLBase + "public/blogs/" + blog.blogId + "/comments/count";
             $.get(countUrl, function(count) {
-                blogs[index].comments = count;
+                blog.comments = count;
+                // make callback only on the last entry in the list
+                if (index === length - 1) {
+                    callback(blogs);
+                }
             });
         });
-        callback(blogs);
     })
 }
 
@@ -18,8 +22,38 @@ function getBlog(blogId, callback) {
     var url = URLBase + "public/blogs/" + blogId;
 
     $.getJSON(url, function(blog) {
-        callback(blog);
+        var countUrl = URLBase + "public/blogs/" + blog.blogId + "/comments/count";
+        $.get(countUrl, function(count) {
+            blog.comments = count;
+            callback(blog);
+        });
     })
+}
+
+function upvoteBlog(blogId, auth, callback) {
+    $.ajax({
+        url: URLBase + "public/blogs/" + blogId + "/upvote",
+        type: 'PUT',
+        headers: {
+            "Authorization": auth
+        },
+        complete: function(jqXHR, textStatus) {
+            callback(jqXHR.status);
+        }
+    });
+}
+
+function downvoteBlog(blogId, auth, callback) {
+    $.ajax({
+        url: URLBase + "public/blogs/" + blogId + "/downvote",
+        type: 'PUT',
+        headers: {
+            "Authorization": auth
+        },
+        complete: function(jqXHR, textStatus) {
+            callback(jqXHR.status);
+        }
+    });
 }
 
 function getComments(blogId, callback) {
@@ -62,5 +96,7 @@ module.exports = {
     getBlogs: getBlogs,
     getBlog: getBlog,
     getComments: getComments,
-    authenticateUser: authenticateUser
+    authenticateUser: authenticateUser,
+    upvoteBlog: upvoteBlog,
+    downvoteBlog: downvoteBlog
 };

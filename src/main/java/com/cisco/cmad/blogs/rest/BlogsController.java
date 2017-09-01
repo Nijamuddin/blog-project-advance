@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -44,9 +45,9 @@ public class BlogsController {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAll() {
+	public Response getAll(@QueryParam("offset") int offset, @QueryParam("count") int count, @QueryParam("category") String category) {
 		try {
-			List<Blog> blogs = blogsService.readAllBlogs();
+			List<Blog> blogs = blogsService.readAllBlogs(offset, count, category);
 			return Response.ok().entity(blogs).build();
 		} catch (DataNotFoundException dnfe) {
 			return Response.status(Response.Status.NO_CONTENT).build();

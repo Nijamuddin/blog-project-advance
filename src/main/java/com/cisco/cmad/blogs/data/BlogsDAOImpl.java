@@ -3,10 +3,10 @@ package com.cisco.cmad.blogs.data;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.dao.BasicDAO;
+import org.mongodb.morphia.query.FindOptions;
 
 import com.cisco.cmad.blogs.api.Blog;
 import com.mongodb.MongoClient;
@@ -49,8 +49,28 @@ public class BlogsDAOImpl extends BasicDAO<Blog, Long> implements BlogsDAO {
 	}
 
 	@Override
-	public List<Blog> readAllBlogs() {
-        List<Blog> blogs = createQuery().order("-lastUpdatedOn").asList();
+	public List<Blog> readAllBlogs(int offset, int count, String category) {
+		List<Blog> blogs;
+		if (category != null) {
+			if (count != 0) {
+				FindOptions options = new FindOptions();
+				options.skip(offset * count).limit(count);
+				blogs = createQuery().filter("category", category).order("-lastUpdatedOn").asList(options);
+			}
+			else {
+				blogs = createQuery().filter("category", category).order("-lastUpdatedOn").asList();
+			}
+		}
+		else {
+			if (count != 0) {
+				FindOptions options = new FindOptions();
+				options.skip(offset * count).limit(count);
+				blogs = createQuery().order("-lastUpdatedOn").asList(options);
+			}
+			else {
+				blogs = createQuery().order("-lastUpdatedOn").asList();
+			}
+		}
         return blogs;
 	}
 

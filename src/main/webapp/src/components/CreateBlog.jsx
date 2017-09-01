@@ -5,7 +5,18 @@ import {
   Link
 } from 'react-router-dom';
 
+import * as Backend from '../script/backend.js';
+import * as Cookie from '../script/cookie.js';
+import * as State from '../script/state.js';
+
 class CreateBlog extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            store: props.store
+        };
+    }
+
     render() {
         return (
             <div id="appCreateBlog" className="container-fluid text-center">

@@ -5,12 +5,17 @@ import {
   Link
 } from 'react-router-dom';
 
+import * as Backend from '../script/backend.js';
+import * as Cookie from '../script/cookie.js';
+import * as State from '../script/state.js';
+
 class Comments extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         // TODO: the comments shall come in from the input
         // TODO: set the delete button depending on input authorization code
         this.state = {
+            store: props.store,
             commentlist: [
                 {
                     commentId: 1,

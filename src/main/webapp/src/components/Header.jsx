@@ -5,25 +5,36 @@ import {
   Link
 } from 'react-router-dom';
 
+import * as Backend from '../script/backend.js';
+import * as Cookie from '../script/cookie.js';
+import * as State from '../script/state.js';
+
 class Header extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            login: props.login
+            store: props.store
         };
         this.renderButton = this.renderButton.bind(this);
+        this.logout = this.logout.bind(this);
+    }
+
+    logout() {
+        Cookie.remove("TOKEN");
+        Cookie.remove("USER");
+        State.emit(this.state.store, 'LOGGED_OUT', null);
     }
 
     renderButton() {
-        if (this.state.login) {
+        if (State.get(this.state.store) !== State.LoggedIn) {
             return (
                 <Link to="/login"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appHeaderLogin">Login</button></Link>
             );
         }
         else {
             return (
-                <Link to="/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appHeaderLogout">Logout</button></Link>
-            );            
+                <Link to="/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appHeaderLogout" onClick={this.logout}>Logout</button></Link>
+            );
         }
     }
 

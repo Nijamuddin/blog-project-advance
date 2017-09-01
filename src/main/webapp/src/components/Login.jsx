@@ -7,12 +7,13 @@ import {
 
 import * as Backend from '../script/backend.js';
 import * as Cookie from '../script/cookie.js';
+import * as State from '../script/state.js';
 
 class Login extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            user: ""
+            store: props.store
         };
 
         this.login = this.login.bind(this);
@@ -34,6 +35,8 @@ class Login extends React.Component {
                 if (authorization !== null) {
                     Cookie.store("TOKEN", authorization);
                     Cookie.store("USER", username);
+                    State.emit(this.state.store, 'LOGGED_IN', null);
+                    // window.location.assign('/blogs');
                 }
                 else {
                     // TODO: need error handline
@@ -63,7 +66,7 @@ class Login extends React.Component {
                             </div>
                             <div className="form-group">
                                 <div className="col-md-6">
-                                    <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appLoginLogin" onClick={this.login}>Login</button>
+                                    <Link to="/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appLoginLogin" onClick={this.login}>Login</button></Link>
                                 </div>
                                 <div className="col-md-6">
                                     <Link to="/signup"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appLoginSignup">Signup</button></Link>

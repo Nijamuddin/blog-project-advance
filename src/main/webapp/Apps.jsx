@@ -6,6 +6,10 @@ import {
   Link
 } from 'react-router-dom';
 
+import * as Backend from './src/script/backend.js';
+import * as Cookie from './src/script/cookie.js';
+import * as State from './src/script/state.js';
+
 import Header from './src/components/Header.jsx';
 import Blogs from './src/components/Blogs.jsx';
 import Banner from './src/components/Banner.jsx';
@@ -18,7 +22,10 @@ import CreateComment from './src/components/CreateComment.jsx';
 
 class Apps extends React.Component {
     constructor(props) {
-        super();
+        super(props);
+        this.state = {
+            store: props.store
+        };
         this.SignupPage = this.SignupPage.bind(this);
         this.BlogsPage = this.BlogsPage.bind(this);
         this.LoginPage = this.LoginPage.bind(this);
@@ -29,9 +36,9 @@ class Apps extends React.Component {
     BlogsPage() {
         return (
             <div>
-                < Header login = { true } />
-                < Banner />
-                < Blogs />
+                < Header store = { this.state.store } />
+                < Banner store = { this.state.store } />
+                < Blogs store = { this.state.store } />
             </div>
         );
     }
@@ -39,9 +46,9 @@ class Apps extends React.Component {
     LoginPage() {
         return (
             <div>
-                < Header login = { true } />
-                < Banner />
-                < Login />
+                < Header store = { this.state.store } />
+                < Banner store = { this.state.store } />
+                < Login store = { this.state.store } />
             </div>
         );
     }
@@ -49,9 +56,9 @@ class Apps extends React.Component {
     SignupPage() {
         return (
             <div>
-                < Header login = { true } />
-                < Banner />
-                < Signup />
+                < Header store = { this.state.store } />
+                < Banner store = { this.state.store } />
+                < Signup store = { this.state.store } />
             </div>
         );
     }
@@ -59,11 +66,11 @@ class Apps extends React.Component {
     BlogWithComments() {
         return (
             <div>
-                < Header login = { true } />
-                < Banner />
-                < Blog />
-                < Comments />
-                < CreateComment />
+                < Header store = { this.state.store } />
+                < Banner store = { this.state.store } />
+                < Blog store = { this.state.store } />
+                < Comments store = { this.state.store } />
+                < CreateComment store = { this.state.store } />
             </div>
         );
     }
@@ -71,9 +78,9 @@ class Apps extends React.Component {
     CreateBlogPage() {
         return (
             <div>
-                < Header login = { true } />
-                < Banner />
-                < CreateBlog />
+                < Header store = { this.state.store } />
+                < Banner store = { this.state.store } />
+                < CreateBlog store = { this.state.store } />
             </div>
         );        
     }
