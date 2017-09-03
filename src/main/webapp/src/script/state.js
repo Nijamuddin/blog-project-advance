@@ -6,12 +6,10 @@ function emit(store, type, data) {
         type: type
     };
 
-    console.warn("STATE SET " + action.type)
     store.dispatch(action);
 }
 
 function get(store) {
-    console.warn("STATE GET " + store.getState())
     return store.getState();
 }
 

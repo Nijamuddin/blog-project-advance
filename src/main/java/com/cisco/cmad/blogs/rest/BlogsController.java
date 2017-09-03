@@ -1,6 +1,8 @@
 package com.cisco.cmad.blogs.rest;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -34,13 +36,35 @@ public class BlogsController {
         return Response.ok().entity(blog).build();
     }
 
-    @GET
+    // TODO: fix using a brute force scan
+	@GET
     @Path("/category/{category}")
     @Produces(MediaType.APPLICATION_JSON)
-    @JwtTokenExpected
     public Response readCategory(@PathParam("category") String category) {
         List<Blog> blogs = blogsService.readByCategory(category);
-        return Response.ok().entity(blogs).build();
+        Set<String> results = new HashSet<String>();
+        for (int i = 0; i < blogs.size(); i++) {
+            results.add(blogs.get(i).getCategory());
+        }
+        if (blogs.size() > 0) {
+            return Response.ok().entity(results).build();
+        }
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+	@GET
+    @Path("/category")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response readAllCategory() {
+        List<Blog> blogs = blogsService.readByCategory("");
+        Set<String> results = new HashSet<String>();
+        for (int i = 0; i < blogs.size(); i++) {
+            results.add(blogs.get(i).getCategory());
+        }
+        if (blogs.size() > 0) {
+            return Response.ok().entity(results).build();
+        }
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
 	@GET
@@ -61,7 +85,7 @@ public class BlogsController {
 	@JwtTokenExpected
 	public Response create(Blog blog) {
 		try {
-			 blogsService.create(blog);
+			blogsService.create(blog);
 			return Response.status(Response.Status.CREATED).build();
 		} catch (InvalidDataException ide) {
 			return Response.status(Response.Status.BAD_REQUEST).build();

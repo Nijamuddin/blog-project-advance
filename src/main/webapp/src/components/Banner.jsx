@@ -25,7 +25,7 @@ class Banner extends React.Component {
     renderCreate() {
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
-                <Link to="/create"><button type="button" className="w3-btn w3-block w3-hover-blue btn-default" id="appBannerCreate">Create</button></Link>
+                <Link to="/create"><button type="button" className="w3-btn w3-hover-black btn-default" id="appBannerCreate">Create</button></Link>
             );
         }
         else {

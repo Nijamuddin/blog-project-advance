@@ -31,7 +31,13 @@ public class UsersService implements Users {
 	public void create(User user) throws InvalidDataException, DuplicateDataException, BlogException {
 		if (user == null)
 			throw new BlogException();
-		dao.create(user);
+		User temp = dao.read(user.getUserName());
+		if (temp == null) {
+			dao.create(user);
+		}
+		else {
+			throw new DuplicateDataException();
+		}
 	}
 
 	@Override

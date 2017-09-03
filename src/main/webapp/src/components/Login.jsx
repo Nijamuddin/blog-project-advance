@@ -62,7 +62,7 @@ class Login extends React.Component {
                                 <input type="text" className="w3-input w3-border w3-block" id="appLoginUserName" placeholder="User Name " />
                             </div>
                             <div className="form-group col-md-12">
-                                <input type="password " className="w3-input w3-border w3-block" id="appLoginPassword" placeholder="Password " />
+                                <input type="password" className="w3-input w3-border w3-block" id="appLoginPassword" placeholder="Password " />
                             </div>
                             <div className="form-group">
                                 <div className="col-md-6">

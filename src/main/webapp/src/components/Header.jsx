@@ -13,10 +13,26 @@ class Header extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            store: props.store
+            store: props.store,
+            categories: []
         };
         this.renderButton = this.renderButton.bind(this);
         this.logout = this.logout.bind(this);
+        this.suggestions = this.suggestions.bind(this);
+
+        Backend.getSuggestions((categories) => {
+            this.setState({
+                categories: categories
+            });
+        });
+    }
+
+    suggestions() {
+        return (
+            <datalist id="results">
+                {this.state.categories.map((category, index) => <option key={index} value={category}></option>)}
+            </datalist>
+        );
     }
 
     logout() {
@@ -26,6 +42,8 @@ class Header extends React.Component {
     }
 
     renderButton() {
+        // TODO: check if cookie is available and is valid here
+        //if (!Cookie.get("TOKEN") && State.get(this.state.store) !== State.LoggedIn) {
         if (State.get(this.state.store) !== State.LoggedIn) {
             return (
                 <Link to="/login"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appHeaderLogin">Login</button></Link>
@@ -47,7 +65,8 @@ class Header extends React.Component {
                         </img>
                     </div>
                     <div className="col-md-4">
-                        <input type="text" className="w3-input w3-border w3-block" id="appHeaderCategory" placeholder="Search " />
+                        <input type="search" list="results" className="w3-input w3-animate-input w3-block w3-border-0" id="appHeaderSearch" placeholder="Search "/>
+                        {this.suggestions()}
                     </div>
                     <div className="col-md-2">
                         {this.renderButton()}

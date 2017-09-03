@@ -15,7 +15,8 @@ class Blogs extends React.Component {
         // TODO: set the delete button depending on input authorization code
         this.state = {
             store: props.store,
-            blogs: []
+            blogs: [],
+            offset: 0
         };
         this.renderBlog = this.renderBlog.bind(this);
         this.renderCommentCount = this.renderCommentCount.bind(this);
@@ -24,12 +25,25 @@ class Blogs extends React.Component {
         this.renderDelete = this.renderDelete.bind(this);
         this.upvote = this.upvote.bind(this);
         this.downvote = this.downvote.bind(this);
-
-        Backend.getBlogs((blogs) => {
+        Backend.getBlogs(0, (blogs) => {
             this.setState({
+                offset: 0,
                 blogs: blogs
             });
         });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        var query = require('query-string').parse(location.search);
+        if ((prevState.offset != query.offset) && (query.offset !== undefined)) {
+            console.warn("componentDidUpdate Prev Offset " + prevState.offset + " Query Params " + location.search)
+            Backend.getBlogs(query.offset, (blogs) => {
+                this.setState({
+                    offset: query.offset,
+                    blogs: blogs
+                });
+            });
+        }
     }
 
     renderDelete(blog) {

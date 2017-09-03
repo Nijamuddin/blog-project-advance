@@ -2,6 +2,7 @@ package com.cisco.cmad.blogs.data;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
@@ -13,13 +14,18 @@ import com.mongodb.MongoClient;
 
 public class BlogsDAOImpl extends BasicDAO<Blog, Long> implements BlogsDAO {
 
-	public static MongoClient mongoClient = new MongoClient("172.31.39.116:27017");
+	//public static MongoClient mongoClient = new MongoClient("172.31.39.116:27017");
+	public static MongoClient mongoClient = new MongoClient("192.168.99.1:27017");
 	public static Morphia morphia = new Morphia();
 	public static Datastore datastore = morphia.createDatastore(mongoClient, "cmad_blog");
 	private static final AtomicInteger index = new AtomicInteger(0);
 
     public BlogsDAOImpl() {
         this(Blog.class, datastore);
+        Blog blog = findOne(createQuery().order("-blogId"));
+        if (blog != null) {
+            index.set((int)blog.getBlogId());
+        }
     }
 
 	public BlogsDAOImpl(Class<Blog> entityClass, Datastore ds) {
@@ -44,8 +50,15 @@ public class BlogsDAOImpl extends BasicDAO<Blog, Long> implements BlogsDAO {
 
 	@Override
 	public List<Blog> readByCategory(String category) {
-		List<Blog> blogs = createQuery().filter("category", category).order("-lastUpdatedOn").asList();
-		return blogs;
+		if (category.isEmpty()) {
+			List<Blog> blogs = createQuery().asList();
+			return blogs;
+		}
+		else {
+			Pattern regexp = Pattern.compile(category, Pattern.CASE_INSENSITIVE);
+			List<Blog> blogs = createQuery().filter("category", regexp).asList();
+			return blogs;
+		}
 	}
 
 	@Override

@@ -1,7 +1,11 @@
-var URLBase = "" //http://192.168.99.100:8080/cmad-blog-project-advance/";
+//var URLBase = "http://web-lb-1363649479.us-west-2.elb.amazonaws.com/cmad-blog-project-advance/";
+var URLBase = "http://192.168.99.100:8080/cmad-blog-project-advance/";
+var blogsPerPage = 4
+var currentPageOffset = 0
 
-function getBlogs(callback) {
-    var url = URLBase + "public/blogs";
+function getBlogs(offset, callback) {
+    var url = URLBase + "public/blogs?count=" + blogsPerPage + "&offset=" + offset;
+    currentPageOffset = offset;
 
     $.getJSON(url, function(blogs) {
         var length = blogs.length;
@@ -92,11 +96,23 @@ function authenticateUser(username, password, callback) {
         }
     });
 }
+
+function getSuggestions(callback) {
+    var url = URLBase + "public/blogs/category";
+
+    $.getJSON(url, function(categories) {
+        callback(categories);
+    })
+}
+
 module.exports = {
     getBlogs: getBlogs,
     getBlog: getBlog,
     getComments: getComments,
     authenticateUser: authenticateUser,
     upvoteBlog: upvoteBlog,
-    downvoteBlog: downvoteBlog
+    downvoteBlog: downvoteBlog,
+    blogsPerPage: blogsPerPage,
+    currentPageOffset: currentPageOffset,
+    getSuggestions: getSuggestions
 };
