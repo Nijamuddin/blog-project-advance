@@ -3,6 +3,25 @@ var URLBase = "http://192.168.99.100:8080/cmad-blog-project-advance/";
 var blogsPerPage = 4
 var currentPageOffset = 0
 
+function getBlogsWithCategory(category, offset, callback) {
+    var url = URLBase + "public/blogs?count=" + blogsPerPage + "&offset=" + offset + "&category=" + category;
+    currentPageOffset = offset;
+
+    $.getJSON(url, function(blogs) {
+        var length = blogs.length;
+        $.each(blogs, function(index, blog) {
+            var countUrl = URLBase + "public/blogs/" + blog.blogId + "/comments/count";
+            $.get(countUrl, function(count) {
+                blog.comments = count;
+                // make callback only on the last entry in the list
+                if (index === length - 1) {
+                    callback(blogs);
+                }
+            });
+        });
+    })
+}
+
 function getBlogs(offset, callback) {
     var url = URLBase + "public/blogs?count=" + blogsPerPage + "&offset=" + offset;
     currentPageOffset = offset;
@@ -105,8 +124,51 @@ function getSuggestions(callback) {
     })
 }
 
+function filterSuggestions(filter, callback) {
+    var url = URLBase + "public/blogs/category/" + filter;
+
+    $.getJSON(url, function(categories) {
+        callback(categories);
+    })
+}
+
+function getBlogUrl(query) {
+    if (query.offset === undefined) {
+        query.offset = 0;
+    }
+
+    if ((query.category === "") || (query.category === undefined)) {
+        return '/blogs?offset=' + query.offset;
+    }
+
+    return '/blogs?offset=' + query.offset + "&category=" + query.category;
+}
+
+function getNextBlogUrl(query) {
+    if (query.offset === undefined) {
+        query.offset = 0;
+    }
+
+    query.offset = Number(query.offset) + 1;
+    return getBlogUrl(query);
+}
+
+function getPrevBlogUrl(query) {
+    if (query.offset === undefined) {
+        query.offset = 0;
+    }
+
+    if (Number(query.offset) === 0) {
+        return null;
+    }
+
+    query.offset = Number(query.offset) - 1;
+    return getBlogUrl(query);
+}
+
 module.exports = {
     getBlogs: getBlogs,
+    getBlogsWithCategory: getBlogsWithCategory,
     getBlog: getBlog,
     getComments: getComments,
     authenticateUser: authenticateUser,
@@ -114,5 +176,9 @@ module.exports = {
     downvoteBlog: downvoteBlog,
     blogsPerPage: blogsPerPage,
     currentPageOffset: currentPageOffset,
-    getSuggestions: getSuggestions
+    getSuggestions: getSuggestions,
+    filterSuggestions: filterSuggestions,
+    getPrevBlogUrl: getPrevBlogUrl,
+    getNextBlogUrl: getNextBlogUrl,
+    getBlogUrl: getBlogUrl
 };

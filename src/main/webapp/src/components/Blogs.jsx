@@ -16,7 +16,8 @@ class Blogs extends React.Component {
         this.state = {
             store: props.store,
             blogs: [],
-            offset: 0
+            offset: 0,
+            category: ""
         };
         this.renderBlog = this.renderBlog.bind(this);
         this.renderCommentCount = this.renderCommentCount.bind(this);
@@ -28,6 +29,7 @@ class Blogs extends React.Component {
         Backend.getBlogs(0, (blogs) => {
             this.setState({
                 offset: 0,
+                category: "",
                 blogs: blogs
             });
         });
@@ -35,14 +37,32 @@ class Blogs extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         var query = require('query-string').parse(location.search);
-        if ((prevState.offset != query.offset) && (query.offset !== undefined)) {
-            console.warn("componentDidUpdate Prev Offset " + prevState.offset + " Query Params " + location.search)
-            Backend.getBlogs(query.offset, (blogs) => {
-                this.setState({
-                    offset: query.offset,
-                    blogs: blogs
+        if (query.category !== undefined) {
+            this.state.category = query.category;
+        }
+        else {
+            this.state.category = "";
+        }
+
+        if ((prevState.offset !== query.offset) && (query.offset !== undefined)) {
+            if (this.state.category === "") {
+                Backend.getBlogs(query.offset, (blogs) => {
+                    this.setState({
+                        offset: query.offset,
+                        category: "",
+                        blogs: blogs
+                    });
                 });
-            });
+            }
+            else {
+                Backend.getBlogsWithCategory(query.category, query.offset, (blogs) => {
+                    this.setState({
+                        offset: query.offset,
+                        category: this.state.category,
+                        blogs: blogs
+                    });
+                });
+            }
         }
     }
 
@@ -60,9 +80,10 @@ class Blogs extends React.Component {
     }
 
     renderUpvote(blog) {
+        var query = require('query-string').parse(location.search);
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
-                <Link to="/blogs"><button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-up"></span> <span className="badge" onClick={() => this.upvote(blog.blogId)}>{blog.upVote}</span></button></Link>
+                <Link to={Backend.getBlogUrl(query)}><button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-up"></span> <span className="badge" onClick={() => this.upvote(blog.blogId)}>{blog.upVote}</span></button></Link>
             );
         }
         else {
@@ -73,9 +94,10 @@ class Blogs extends React.Component {
     }
 
     renderDownvote(blog) {
+        var query = require('query-string').parse(location.search);
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
-                <Link to="/blogs"><button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-down"></span> <span className="badge" onClick={() => this.downvote(blog.blogId)}>{blog.downVote}</span></button></Link>
+                <Link to={Backend.getBlogUrl(query)}><button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-down"></span> <span className="badge" onClick={() => this.downvote(blog.blogId)}>{blog.downVote}</span></button></Link>
             );
         }
         else {

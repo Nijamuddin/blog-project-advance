@@ -14,11 +14,22 @@
         body {
             width: 100%;
             height: 100%;
+            position: relative;
+            z-index: 0;
         }
         
         #appHeader {
             height: 50px;
             background-color: black;
+            width: 100%;
+            display: inline-block;
+        }
+        
+        #appSearchResults {
+            position: absolute;
+            display: none;
+            z-index: 1;
+            width: 100%;
         }
         
         #appHeaderLogo {

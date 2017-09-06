@@ -21,14 +21,15 @@ class Pagination extends React.Component {
 
     renderPrevious() {
         var query = require('query-string').parse(location.search);
-        if ((query.offset === undefined) || (query.offset === "0")) {
+        var prevBlogUrl = Backend.getPrevBlogUrl(query);
+        if (prevBlogUrl === null) {
             return (
                 <button type="button" className="w3-btn w3-block w3-hover-white btn-default w3-disabled">❮ Previous</button>
             );
         }
         else {
             return (
-                <Link to={`/blogs?offset=${Number(query.offset)-1}`}>
+                <Link to={prevBlogUrl}>
                     <button type="button" className="w3-btn w3-block w3-hover-white btn-default">❮ Previous</button>
                 </Link>
             );
@@ -37,11 +38,9 @@ class Pagination extends React.Component {
 
     renderNext() {
         var query = require('query-string').parse(location.search);
-        if (query.offset === undefined) {
-            query.offset = 0
-        }
+        var nextBlogUrl = Backend.getNextBlogUrl(query);
         return (
-            <Link to={`/blogs?offset=${Number(query.offset)+1}`}>
+            <Link to={nextBlogUrl}>
                 <button type="button" className="w3-btn w3-block w3-hover-white btn-default">Next ❯</button>
             </Link>
         );

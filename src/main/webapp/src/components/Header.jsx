@@ -14,25 +14,49 @@ class Header extends React.Component {
         super();
         this.state = {
             store: props.store,
-            categories: []
+            results: []
         };
         this.renderButton = this.renderButton.bind(this);
         this.logout = this.logout.bind(this);
-        this.suggestions = this.suggestions.bind(this);
-
-        Backend.getSuggestions((categories) => {
-            this.setState({
-                categories: categories
-            });
-        });
+        this.results = this.results.bind(this);
+        this.renderSearchResults = this.renderSearchResults.bind(this);
+        this.searchResult = this.searchResult.bind(this);
     }
 
-    suggestions() {
+    componentDidUpdate(prevProps, prevState) {
+        $("#appSearchResults").css("display","none")
+    }
+
+    searchResult(result, index) {
+        var query = {
+            offset: 0,
+            category: result
+        };
+
         return (
-            <datalist id="results">
-                {this.state.categories.map((category, index) => <option key={index} value={category}></option>)}
-            </datalist>
+            <div key={index}>
+                <Link to={Backend.getBlogUrl(query)}><div className="w3-bar-item w3-button" onClick={() => {$("#appHeaderSearch").val("")}} >{result}</div></Link>
+            </div>
         );
+    }
+
+    renderSearchResults() {
+        return (
+            <div className="row">
+                <div id="appSearchResults" className="w3-dropdown-content w3-bar-block w3-border">
+                    {this.state.results.map((item, index) => this.searchResult(item, index))}
+                </div> 
+            </div>
+        );
+    }
+
+    results() {
+        Backend.filterSuggestions($('#appHeaderSearch').val(), (results) => {
+            this.setState({
+                results: results
+            });
+            $("#appSearchResults").css("display","block")
+        });
     }
 
     logout() {
@@ -65,8 +89,8 @@ class Header extends React.Component {
                         </img>
                     </div>
                     <div className="col-md-4">
-                        <input type="search" list="results" className="w3-input w3-animate-input w3-block w3-border-0" id="appHeaderSearch" placeholder="Search "/>
-                        {this.suggestions()}
+                        <input type="search" className="w3-input w3-animate-input w3-block w3-border-0" id="appHeaderSearch" placeholder="Search " onKeyUp={() => this.results()} />
+                        {this.renderSearchResults()}
                     </div>
                     <div className="col-md-2">
                         {this.renderButton()}
