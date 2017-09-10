@@ -15,6 +15,13 @@ class CreateBlog extends React.Component {
         this.state = {
             store: props.store
         };
+        this.createBlog = this.createBlog.bind(this);
+    }
+
+    createBlog() {
+        Backend.createBlog($("#appCreateBlogTitle").val(), $("#appCreateBlogContent").val(), $("#appCreateBlogCategory").val(), Cookie.get("USER"), Cookie.get("TOKEN"), (status) => {
+            // TODO: handle error case
+        });
     }
 
     render() {
@@ -33,9 +40,13 @@ class CreateBlog extends React.Component {
                                 <label htmlFor="appCreateBlogContent">Content:</label>
                                 <textarea className="form-control" rows="12" id="appCreateBlogContent"></textarea>
                             </div>
+                            <div className="form-group col-md-12 w3-left-align">
+                                <label htmlFor="appCreateBlogCategory">Category:</label>
+                                <input type="text" className="form-control" id="appCreateBlogCategory"></input>
+                            </div>
                             <div className="form-group">
                                 <div className="col-md-6">
-                                    <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateBlogCreate">Create</button>
+                                    <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateBlogCreate" onClick={() => this.createBlog()}>Create</button>
                                 </div>
                                 <div className="col-md-6">
                                     <Link to="/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateBlogCancel">Cancel</button></Link>

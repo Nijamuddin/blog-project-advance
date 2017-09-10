@@ -96,7 +96,7 @@ class Apps extends React.Component {
                     <Route exact path="/create" component={this.CreateBlogPage}/>
                     <Route exact path="/blog" component={this.BlogWithComments}/>
                     <Route exact path="/blogs" component={this.BlogsPage}/>
-                    <Route exact path="/" component={this.BlogsPage}/>
+                    <Route path="/" component={this.BlogsPage}/>
                </Switch>
             </Router>
         );

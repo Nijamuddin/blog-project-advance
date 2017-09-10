@@ -1,17 +1,14 @@
 const path = require('path');
 
-config = {
+config = {	
     entry: './main.js',
     output: {
-        path: path.resolve(__dirname, "."),
-        filename: 'index.js',
+        path: path.resolve(__dirname, "./src/script"),
+        filename: 'bundle.js',
     },
     devServer: {
         inline: true,
         port: 9999
-    },
-    resolve: {
-        extensions: ['.png', '.jpg', '.js', '.html', '.jsx'],
     },
     module: {
         loaders: [{

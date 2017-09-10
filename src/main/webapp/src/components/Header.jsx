@@ -51,12 +51,18 @@ class Header extends React.Component {
     }
 
     results() {
-        Backend.filterSuggestions($('#appHeaderSearch').val(), (results) => {
-            this.setState({
-                results: results
+        var temp = $('#appHeaderSearch').val();
+        if (temp === "") {
+            $("#appSearchResults").css("display","none")
+        }
+        else {
+            Backend.filterSuggestions($('#appHeaderSearch').val(), (results) => {
+                this.setState({
+                    results: results
+                });
+                $("#appSearchResults").css("display","block")
             });
-            $("#appSearchResults").css("display","block")
-        });
+        }
     }
 
     logout() {

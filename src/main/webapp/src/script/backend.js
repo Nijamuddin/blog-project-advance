@@ -79,6 +79,32 @@ function downvoteBlog(blogId, auth, callback) {
     });
 }
 
+function createBlog(title, content, category, author, auth, callback) {
+    var url = URLBase + "public/blogs/";
+    var blog = {
+        "title": title,
+        "blogContent": content,
+        "category": category,
+        "upVote": 0,
+        "downVote": 0,
+        "author": author
+    };
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: JSON.stringify(blog),
+        dataType: "json",
+        headers: {
+            "Authorization": auth
+        },
+        contentType: "application/json; charset=utf-8",
+        complete: function(jqXHR, textStatus) {
+            callback(jqXHR.status);
+        }
+    });
+}
+
 function getComments(blogId, callback) {
     var url = URLBase + "public/blogs/" + blogId + "/comments/";
 
@@ -180,5 +206,6 @@ module.exports = {
     filterSuggestions: filterSuggestions,
     getPrevBlogUrl: getPrevBlogUrl,
     getNextBlogUrl: getNextBlogUrl,
-    getBlogUrl: getBlogUrl
+    getBlogUrl: getBlogUrl,
+    createBlog: createBlog
 };

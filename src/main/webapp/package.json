@@ -1,12 +1,12 @@
 {
   "name": "blog_reactjs",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "bundle.js",
   "scripts": {
-    "start": "webpack-dev-server --hot",
-    "build": "webpack"
+    "start": "webpack-dev-server --watch-poll",
+    "build": "webpack --config webpack.config.js --progress --colors --hot"
   },
-  "author": "",
+  "author": "GuruVinayak P",
   "license": "ISC",
   "dependencies": {
     "query-string": "^5.0.0",
@@ -15,9 +15,17 @@
     "react-router-dom": "^4.1.2",
     "react-select-search": "^0.5.5",
     "redux": "^3.7.2",
-    "webpack": "^3.5.5",
+    "webpack": "^3.5.6",
     "webpack-dev-server": "^2.7.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^3.5.6",
+    "webpack-dev-server": "^2.7.1"
+  },
   "description": ""
 }
