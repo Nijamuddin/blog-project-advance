@@ -91,11 +91,11 @@ class Apps extends React.Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/login" component={this.LoginPage}/>
-                    <Route exact path="/signup" component={this.SignupPage}/>
-                    <Route exact path="/create" component={this.CreateBlogPage}/>
-                    <Route exact path="/blog" component={this.BlogWithComments}/>
-                    <Route exact path="/blogs" component={this.BlogsPage}/>
+                    <Route exact path="/cmad-blog-project-advance/login" component={this.LoginPage}/>
+                    <Route exact path="/cmad-blog-project-advance/signup" component={this.SignupPage}/>
+                    <Route exact path="/cmad-blog-project-advance/create" component={this.CreateBlogPage}/>
+                    <Route exact path="/cmad-blog-project-advance/blog" component={this.BlogWithComments}/>
+                    <Route exact path="/cmad-blog-project-advance/blogs" component={this.BlogsPage}/>
                     <Route path="/" component={this.BlogsPage}/>
                </Switch>
             </Router>

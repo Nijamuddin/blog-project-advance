@@ -1,5 +1,5 @@
 //var URLBase = "http://web-lb-1363649479.us-west-2.elb.amazonaws.com/cmad-blog-project-advance/";
-var URLBase = "http://192.168.99.100:8080/cmad-blog-project-advance/";
+var URLBase = "";//http://192.168.99.100:8080/cmad-blog-project-advance/";
 var blogsPerPage = 4
 var currentPageOffset = 0
 
@@ -164,10 +164,10 @@ function getBlogUrl(query) {
     }
 
     if ((query.category === "") || (query.category === undefined)) {
-        return '/blogs?offset=' + query.offset;
+        return '/cmad-blog-project-advance/blogs?offset=' + query.offset;
     }
 
-    return '/blogs?offset=' + query.offset + "&category=" + query.category;
+    return '/cmad-blog-project-advance/blogs?offset=' + query.offset + "&category=" + query.category;
 }
 
 function getNextBlogUrl(query) {

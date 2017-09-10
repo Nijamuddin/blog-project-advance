@@ -76,12 +76,12 @@ class Header extends React.Component {
         //if (!Cookie.get("TOKEN") && State.get(this.state.store) !== State.LoggedIn) {
         if (State.get(this.state.store) !== State.LoggedIn) {
             return (
-                <Link to="/login"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appHeaderLogin">Login</button></Link>
+                <Link to="/cmad-blog-project-advance/login"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appHeaderLogin">Login</button></Link>
             );
         }
         else {
             return (
-                <Link to="/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appHeaderLogout" onClick={this.logout}>Logout</button></Link>
+                <Link to="/cmad-blog-project-advance"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appHeaderLogout" onClick={this.logout}>Logout</button></Link>
             );
         }
     }

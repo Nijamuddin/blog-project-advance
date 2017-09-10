@@ -141,7 +141,7 @@ class Blogs extends React.Component {
                             <h6>Posted by <i><b>{blog.author}</b></i> on <i>{Date(blog.lastUpdatedOn)}</i></h6>
                         </header>
 
-                        <Link to={`/blog?blogId=${blog.blogId}`}>
+                        <Link to={`/cmad-blog-project-advance/blog?blogId=${blog.blogId}`}>
                         <div className="w3-container text-justify blogs-content">
                             {blog.blogContent}
                         </div>

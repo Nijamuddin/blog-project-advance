@@ -33,7 +33,7 @@ class CreateComment extends React.Component {
                                 <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateCommentPost">Post</button>
                             </div>
                             <div className="col-md-6">
-                                <Link to="/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateCommentCancel">Cancel</button></Link>
+                                <Link to="/cmad-blog-project-advance/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateCommentCancel">Cancel</button></Link>
                             </div>
                         </div>
                         <div className="col-sm-2"></div>

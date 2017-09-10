@@ -66,10 +66,10 @@ class Login extends React.Component {
                             </div>
                             <div className="form-group">
                                 <div className="col-md-6">
-                                    <Link to="/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appLoginLogin" onClick={this.login}>Login</button></Link>
+                                    <Link to="/cmad-blog-project-advance/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appLoginLogin" onClick={this.login}>Login</button></Link>
                                 </div>
                                 <div className="col-md-6">
-                                    <Link to="/signup"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appLoginSignup">Signup</button></Link>
+                                    <Link to="/cmad-blog-project-advance/signup"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appLoginSignup">Signup</button></Link>
                                 </div>
                             </div>
                         </form>
