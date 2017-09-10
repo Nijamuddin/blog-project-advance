@@ -14,8 +14,8 @@ import com.mongodb.MongoClient;
 
 public class BlogsDAOImpl extends BasicDAO<Blog, Long> implements BlogsDAO {
 
-	//public static MongoClient mongoClient = new MongoClient("172.31.39.116:27017");
-	public static MongoClient mongoClient = new MongoClient("192.168.99.1:27017");
+	public static MongoClient mongoClient = new MongoClient("172.31.39.116:27017");
+	//public static MongoClient mongoClient = new MongoClient("192.168.99.1:27017");
 	public static Morphia morphia = new Morphia();
 	public static Datastore datastore = morphia.createDatastore(mongoClient, "cmad_blog");
 	private static final AtomicInteger index = new AtomicInteger(0);
