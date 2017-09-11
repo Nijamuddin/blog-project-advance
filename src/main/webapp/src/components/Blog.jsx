@@ -50,9 +50,7 @@ class Blog extends React.Component {
     renderUpvote(blog) {
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
-                <Link to={`/cmad-blog-project-advance/blog?blogId=${blog.blogId}`}>
-                    <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-up"></span> <span className="badge" onClick={() => this.upvote(blog.blogId)}>{blog.upVote}</span></button>
-                </Link>
+                <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-up"></span> <span className="badge" onClick={() => this.upvote(blog.blogId)}>{blog.upVote}</span></button>
             );
         }
         else {
@@ -65,9 +63,7 @@ class Blog extends React.Component {
     renderDownvote(blog) {
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
-                <Link to={`/cmad-blog-project-advance/blog?blogId=${blog.blogId}`}>
-                    <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-down"></span> <span className="badge" onClick={() => this.downvote(blog.blogId)}>{blog.downVote}</span></button>
-                </Link>
+                <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-down"></span> <span className="badge" onClick={() => this.downvote(blog.blogId)}>{blog.downVote}</span></button>
             );
         }
         else {
@@ -92,11 +88,21 @@ class Blog extends React.Component {
 
     upvote(blogId) {
         Backend.upvoteBlog(blogId, Cookie.get('TOKEN'), (status) => {
+            Backend.getBlog(blogId, (blog) => {
+                this.setState({
+                    blog: blog
+                });
+            });
         });
     }
 
     downvote(blogId) {
         Backend.downvoteBlog(blogId, Cookie.get('TOKEN'), (status) => {
+            Backend.getBlog(blogId, (blog) => {
+                this.setState({
+                    blog: blog
+                });
+            });
         });
     }
 

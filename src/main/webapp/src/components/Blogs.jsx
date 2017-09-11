@@ -83,7 +83,7 @@ class Blogs extends React.Component {
         var query = require('query-string').parse(location.search);
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
-                <Link to={Backend.getBlogUrl(query)}><button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-up"></span> <span className="badge" onClick={() => this.upvote(blog.blogId)}>{blog.upVote}</span></button></Link>
+                <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-up"></span> <span className="badge" onClick={() => this.upvote(blog.blogId)}>{blog.upVote}</span></button>
             );
         }
         else {
@@ -97,7 +97,7 @@ class Blogs extends React.Component {
         var query = require('query-string').parse(location.search);
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
-                <Link to={Backend.getBlogUrl(query)}><button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-down"></span> <span className="badge" onClick={() => this.downvote(blog.blogId)}>{blog.downVote}</span></button></Link>
+                <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-down"></span> <span className="badge" onClick={() => this.downvote(blog.blogId)}>{blog.downVote}</span></button>
             );
         }
         else {
@@ -122,11 +122,25 @@ class Blogs extends React.Component {
 
     upvote(blogId) {
         Backend.upvoteBlog(blogId, Cookie.get('TOKEN'), (status) => {
+            Backend.getBlogs(this.state.offset, (blogs) => {
+                this.setState({
+                    offset: this.state.offset,
+                    category: this.state.category,
+                    blogs: blogs
+                });
+            });
         });
     }
 
     downvote(blogId) {
         Backend.downvoteBlog(blogId, Cookie.get('TOKEN'), (status) => {
+            Backend.getBlogs(this.state.offset, (blogs) => {
+                this.setState({
+                    offset: this.state.offset,
+                    category: this.state.category,
+                    blogs: blogs
+                });
+            });
         });
     }
 

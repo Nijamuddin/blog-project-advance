@@ -131,8 +131,8 @@ function authenticateUser(username, password, callback) {
                 case 200:
                 case 201:
                     // TODO: revert - needed since we are testing with CORS
-                    // callback(jqXHR.getResponseHeader("Authorization"));
-                    callback("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlzcyI6Imh0dHA6Ly8xOTIuMTY4Ljk5LjEwMDo4MDgwL2NtYWQtYmxvZy1wcm9qZWN0LWFkdmFuY2UvcHVibGljL3VzZXJzL2F1dGhlbnRpY2F0ZVVzZXIiLCJpYXQiOjE1MDM3NDkwNjAsImV4cCI6MTUwMzc1MDI2MH0.KckuIb7NFOW-DwUCKCVB2P4VfzOccEJa4nIrjw3R9eISHoHjOG2wo_Np2a9EYvC_uupU-JYBVoLsuccRX2Qn0Q");
+                    callback(jqXHR.getResponseHeader("Authorization"));
+                    //callback("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlzcyI6Imh0dHA6Ly8xOTIuMTY4Ljk5LjEwMDo4MDgwL2NtYWQtYmxvZy1wcm9qZWN0LWFkdmFuY2UvcHVibGljL3VzZXJzL2F1dGhlbnRpY2F0ZVVzZXIiLCJpYXQiOjE1MDM3NDkwNjAsImV4cCI6MTUwMzc1MDI2MH0.KckuIb7NFOW-DwUCKCVB2P4VfzOccEJa4nIrjw3R9eISHoHjOG2wo_Np2a9EYvC_uupU-JYBVoLsuccRX2Qn0Q");
                     break;
                 default:
                     callback(null);
