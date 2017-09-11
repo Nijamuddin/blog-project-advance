@@ -3,7 +3,7 @@ import requests
 import csv
 import json
 
-baseUrl = "http://192.168.99.100:8080/cmad-blog-project-advance"
+baseUrl = "http://web-lb-1363649479.us-west-2.elb.amazonaws.com/cmad-blog-project-advance"
 
 def authenticate_user( userName, password ):
     headers = { 'Content-Type': 'application/json' }

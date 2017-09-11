@@ -46,7 +46,7 @@ class CreateBlog extends React.Component {
                             </div>
                             <div className="form-group">
                                 <div className="col-md-6">
-                                    <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateBlogCreate" onClick={() => this.createBlog()}>Create</button>
+                                    <Link to="/cmad-blog-project-advance/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateBlogCreate" onClick={() => this.createBlog()}>Create</button></Link>
                                 </div>
                                 <div className="col-md-6">
                                     <Link to="/cmad-blog-project-advance/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateBlogCancel">Cancel</button></Link>
