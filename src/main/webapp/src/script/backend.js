@@ -41,6 +41,25 @@ function getBlogs(offset, callback) {
     })
 }
 
+function getBlogsAuthored(author, callback) {
+    var url = URLBase + "public/blogs/authored?author=" + author;
+    currentPageOffset = 0;
+
+    $.getJSON(url, function(blogs) {
+        var length = blogs.length;
+        $.each(blogs, function(index, blog) {
+            var countUrl = URLBase + "public/blogs/" + blog.blogId + "/comments/count";
+            $.get(countUrl, function(count) {
+                blog.comments = count;
+                // make callback only on the last entry in the list
+                if (index === length - 1) {
+                    callback(blogs);
+                }
+            });
+        });
+    })
+}
+
 function getBlog(blogId, callback) {
     var url = URLBase + "public/blogs/" + blogId;
 
@@ -207,5 +226,6 @@ module.exports = {
     getPrevBlogUrl: getPrevBlogUrl,
     getNextBlogUrl: getNextBlogUrl,
     getBlogUrl: getBlogUrl,
-    createBlog: createBlog
+    createBlog: createBlog,
+    getBlogsAuthored: getBlogsAuthored
 };

@@ -14,11 +14,13 @@ class Banner extends React.Component {
         super(props)
         this.state = {
             store: props.store,
+            activeTab: props.activeTab,
             tab: 'All'
         };
         this.renderCreate = this.renderCreate.bind(this);
         this.renderTabActive = this.renderTabActive.bind(this);
         this.renderTabInactive = this.renderTabInactive.bind(this);
+        this.renderTab = this.renderTab.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
     }
 
@@ -36,32 +38,40 @@ class Banner extends React.Component {
         }
     }
 
-    renderTabActive(title) {
+    renderTabActive(title, link) {
         return (
-            <li><div className="w3-btn w3-block w3-black w3-hover-black btn-default">{title}</div></li>
+            <li><Link to={link}><div className="w3-btn w3-block w3-black w3-hover-black btn-default">{title}</div></Link></li>
         );
     }
 
-    renderTabInactive(title) {
+    renderTabInactive(title, link) {
         return (
-            <li><div className="w3-btn w3-block w3-hover-black btn-default">{title}</div></li>
+            <li><Link to={link}><div className="w3-btn w3-block w3-hover-black btn-default">{title}</div></Link></li>
         );
+    }
+
+    renderTab(title, link) {
+        if (title === this.state.activeTab) {
+            return this.renderTabActive(title, link);
+        }
+        else {
+            return this.renderTabInactive(title, link);
+        }
     }
 
     renderTabs() {
         if (State.get(this.state.store) === State.LoggedIn) {
             return (
                 <ul className="nav nav-tabs">
-                    {this.renderTabActive('All')}
-                    {this.renderTabInactive('Authored')}
-                    {this.renderTabInactive('Commented')}
+                    {this.renderTab('All', "/cmad-blog-project-advance/blogs")}
+                    {this.renderTab('Authored', "/cmad-blog-project-advance/authored")}
                 </ul>
             );
         }
         else {
             return (
                 <ul className="nav nav-tabs">
-                    {this.renderTabActive('All')}
+                    {this.renderTab('All', "/cmad-blog-project-advance")}
                 </ul>
             );
         }    

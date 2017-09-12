@@ -53,6 +53,14 @@ public class BlogsController {
     }
 
 	@GET
+    @Path("/authored")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response readAllAuthored(@QueryParam("author") String author) {
+        List<Blog> blogs = blogsService.readByUserId(author);
+        return Response.ok().entity(blogs).build();
+    }
+
+	@GET
     @Path("/category")
     @Produces(MediaType.APPLICATION_JSON)
     public Response readAllCategory() {

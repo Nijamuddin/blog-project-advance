@@ -26,13 +26,25 @@ class Blogs extends React.Component {
         this.renderDelete = this.renderDelete.bind(this);
         this.upvote = this.upvote.bind(this);
         this.downvote = this.downvote.bind(this);
-        Backend.getBlogs(0, (blogs) => {
-            this.setState({
-                offset: 0,
-                category: "",
-                blogs: blogs
+
+        if (location.toString().endsWith("authored") === true) {
+            Backend.getBlogsAuthored(Cookie.get('USER'),(blogs) => {
+                this.setState({
+                    offset: 0,
+                    category: "",
+                    blogs: blogs
+                });
             });
-        });
+        }
+        else {
+            Backend.getBlogs(0, (blogs) => {
+                this.setState({
+                    offset: 0,
+                    category: "",
+                    blogs: blogs
+                });
+            });            
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
