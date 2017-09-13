@@ -33,46 +33,26 @@ public class CommentsController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll(@PathParam("blogid") int blogid) {
-		try {
-			List<Comment> comments = commentService.readAllByBlogId(blogid);
-			return Response.ok().entity(comments).build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		List<Comment> comments = commentService.readAllByBlogId(blogid);
+		return Response.ok().entity(comments).build();
 	}
 
 	@GET
 	@Path("/count")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCount(@PathParam("blogid") int blogid) {
-		try {
-			long count = commentService.readCountByBlogId(blogid);
-			return Response.ok().entity(count).build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		long count = commentService.readCountByBlogId(blogid);
+		return Response.ok().entity(count).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response create(@PathParam("blogid") int blogid, Comment comment) {
-		try {
-			Blog blog = blogService.read(blogid);
-			comment.setBlogId(blogid);
-			commentService.create(comment);
-			return Response.status(Response.Status.CREATED).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (DuplicateDataException dde) {
-			return Response.status(Response.Status.CONFLICT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Blog blog = blogService.read(blogid);
+		comment.setBlogId(blogid);
+		commentService.create(comment);
+		return Response.status(Response.Status.CREATED).build();
 	}
 
 	// INFO should have been PATCH - but JERSY does not support PATCH and hence
@@ -82,107 +62,63 @@ public class CommentsController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response update(@PathParam("blogid") int blogid, @PathParam("commentid") int commentid, Comment comment) {
-		try {
-			commentService.update(comment);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		commentService.update(comment);
+		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{commentid}")
 	@JwtTokenExpected
 	public Response delete(@PathParam("blogid") int blogid, @PathParam("commentid") int commentid) {
-		try {
-			commentService.delete(commentid);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		commentService.delete(commentid);
+		return Response.ok().build();
 	}
 
 	@PUT
 	@Path("/{commentid}/upvote")
 	@JwtTokenExpected
 	public Response doUpvote(@PathParam("blogid") int blogid, @PathParam("commentid") int commentid) {
-		try {
-			Comment comment = commentService.read(commentid);
-			int upvote = comment.getUpVote();
-			upvote++;
-			comment.setUpVote(upvote);
-			commentService.update(comment);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Comment comment = commentService.read(commentid);
+		int upvote = comment.getUpVote();
+		upvote++;
+		comment.setUpVote(upvote);
+		commentService.update(comment);
+		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{commentid}/upvote")
 	@JwtTokenExpected
 	public Response undoUpvote(@PathParam("blogid") int blogid, @PathParam("commentid") int commentid) {
-		try {
-			Comment comment = commentService.read(commentid);
-			int upvote = comment.getUpVote();
-			if (upvote > 0) upvote--;
-			comment.setUpVote(upvote);
-			commentService.update(comment);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Comment comment = commentService.read(commentid);
+		int upvote = comment.getUpVote();
+		if (upvote > 0) upvote--;
+		comment.setUpVote(upvote);
+		commentService.update(comment);
+		return Response.ok().build();
 	}
 
 	@PUT
 	@Path("/{commentid}/downvote")
 	@JwtTokenExpected
 	public Response doDownvote(@PathParam("blogid") int blogid, @PathParam("commentid") int commentid) {
-		try {
-			Comment comment = commentService.read(commentid);
-			int downvote = comment.getDownVote();
-			downvote++;
-			comment.setDownVote(downvote);
-			commentService.update(comment);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Comment comment = commentService.read(commentid);
+		int downvote = comment.getDownVote();
+		downvote++;
+		comment.setDownVote(downvote);
+		commentService.update(comment);
+		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{commentid}/downvote")
 	@JwtTokenExpected
 	public Response undoDownvote(@PathParam("blogid") int blogid, @PathParam("commentid") int commentid) {
-		try {
-			Comment comment = commentService.read(commentid);
-			int downvote = comment.getDownVote();
-			if (downvote > 0) downvote--;
-			comment.setDownVote(downvote);
-			commentService.update(comment);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Comment comment = commentService.read(commentid);
+		int downvote = comment.getDownVote();
+		if (downvote > 0) downvote--;
+		comment.setDownVote(downvote);
+		commentService.update(comment);
+		return Response.ok().build();
 	}
 }

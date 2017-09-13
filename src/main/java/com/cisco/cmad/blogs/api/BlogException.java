@@ -1,7 +1,10 @@
 package com.cisco.cmad.blogs.api;
 
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+
 @SuppressWarnings("serial")
-public class BlogException extends RuntimeException {
+public class BlogException extends RuntimeException implements ExceptionMapper<BlogException> {
 
     public BlogException() {
     }
@@ -22,4 +25,8 @@ public class BlogException extends RuntimeException {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
+	@Override
+	public Response toResponse(BlogException arg0) {
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	}
 }

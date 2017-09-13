@@ -1,5 +1,7 @@
 package com.cisco.cmad.blogs.api;
 
+import javax.ws.rs.core.Response;
+
 @SuppressWarnings("serial")
 public class DuplicateDataException extends BlogException {
 
@@ -23,4 +25,8 @@ public class DuplicateDataException extends BlogException {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
+	@Override
+	public Response toResponse(BlogException arg0) {
+		return Response.status(Response.Status.CONFLICT).build();
+	}
 }

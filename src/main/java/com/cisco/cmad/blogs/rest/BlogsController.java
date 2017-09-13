@@ -78,30 +78,16 @@ public class BlogsController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll(@QueryParam("offset") int offset, @QueryParam("count") int count, @QueryParam("category") String category) {
-		try {
-			List<Blog> blogs = blogsService.readAllBlogs(offset, count, category);
-			return Response.ok().entity(blogs).build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		List<Blog> blogs = blogsService.readAllBlogs(offset, count, category);
+		return Response.ok().entity(blogs).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response create(Blog blog) {
-		try {
-			blogsService.create(blog);
-			return Response.status(Response.Status.CREATED).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (DuplicateDataException dde) {
-			return Response.status(Response.Status.CONFLICT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		blogsService.create(blog);
+		return Response.status(Response.Status.CREATED).build();
 	}
 
 	// INFO should have been PATCH - but JERSY does not support PATCH and hence
@@ -111,107 +97,63 @@ public class BlogsController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response update(@PathParam("blogid") int blogid, Blog blog) {
-		try {
-			blogsService.update(blog);
-			return Response.ok().build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		blogsService.update(blog);
+		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{blogid}")
 	@JwtTokenExpected
 	public Response delete(@PathParam("blogid") int blogid) {
-		try {
-			blogsService.delete(blogid);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		blogsService.delete(blogid);
+		return Response.ok().build();
 	}
 
 	@PUT
 	@Path("/{blogid}/upvote")
 	@JwtTokenExpected
 	public Response doUpvote(@PathParam("blogid") int blogid) {
-		try {
-			Blog blog = blogsService.read(blogid);
-			int upvote = blog.getUpVote();
-			upvote++;
-			blog.setUpVote(upvote);
-			blogsService.update(blog);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Blog blog = blogsService.read(blogid);
+		int upvote = blog.getUpVote();
+		upvote++;
+		blog.setUpVote(upvote);
+		blogsService.update(blog);
+		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{blogid}/upvote")
 	@JwtTokenExpected
 	public Response undoUpvote(@PathParam("blogid") int blogid) {
-		try {
-			Blog blog = blogsService.read(blogid);
-			int upvote = blog.getUpVote();
-			if (upvote > 0) upvote--;
-			blog.setUpVote(upvote);
-			blogsService.update(blog);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Blog blog = blogsService.read(blogid);
+		int upvote = blog.getUpVote();
+		if (upvote > 0) upvote--;
+		blog.setUpVote(upvote);
+		blogsService.update(blog);
+		return Response.ok().build();
 	}
 
 	@PUT
 	@Path("/{blogid}/downvote")
 	@JwtTokenExpected
 	public Response doDownvote(@PathParam("blogid") int blogid) {
-		try {
-			Blog blog = blogsService.read(blogid);
-			int downvote = blog.getDownVote();
-			downvote++;
-			blog.setDownVote(downvote);
-			blogsService.update(blog);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Blog blog = blogsService.read(blogid);
+		int downvote = blog.getDownVote();
+		downvote++;
+		blog.setDownVote(downvote);
+		blogsService.update(blog);
+		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{blogid}/downvote")
 	@JwtTokenExpected
 	public Response undoDownvote(@PathParam("blogid") int blogid) {
-		try {
-			Blog blog = blogsService.read(blogid);
-			int downvote = blog.getDownVote();
-			if (downvote > 0) downvote--;
-			blog.setDownVote(downvote);
-			blogsService.update(blog);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		Blog blog = blogsService.read(blogid);
+		int downvote = blog.getDownVote();
+		if (downvote > 0) downvote--;
+		blog.setDownVote(downvote);
+		blogsService.update(blog);
+		return Response.ok().build();
 	}
 }

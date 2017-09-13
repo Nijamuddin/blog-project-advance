@@ -51,33 +51,19 @@ public class UsersController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response getAll() {
-		try {
-			List<User> matched;
-			GenericEntity<List<User>> entities;
-			matched = userService.readAllUsers();
-			entities = new GenericEntity<List<User>>(matched) {
-			};
-			return Response.ok().entity(entities).build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		List<User> matched;
+		GenericEntity<List<User>> entities;
+		matched = userService.readAllUsers();
+		entities = new GenericEntity<List<User>>(matched) {
+		};
+		return Response.ok().entity(entities).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response create(User user) {
-		try {
-			userService.create(user);
-			return Response.status(Response.Status.CREATED).build();
-		} catch (InvalidDataException ide) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (DuplicateDataException dde) {
-			return Response.status(Response.Status.CONFLICT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		userService.create(user);
+		return Response.status(Response.Status.CREATED).build();
 	}
 
 	@GET
@@ -85,14 +71,8 @@ public class UsersController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response get(@PathParam("username") String username) {
-		try {
-			User data = userService.read(username);
-			return Response.ok().entity(data).build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		User data = userService.read(username);
+		return Response.ok().entity(data).build();
 	}
 
 	// INFO should have been PATCH - but JERSY does not support PATCH and hence
@@ -102,28 +82,16 @@ public class UsersController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response update(@PathParam("username") String userName, User user) {
-		try {
-			userService.update(user);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		userService.update(user);
+		return Response.ok().build();
 	}
 
 	@DELETE
 	@Path("/{username}")
 	@JwtTokenExpected
 	public Response delete(@PathParam("username") String userName) {
-		try {
-			userService.delete(userName);
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		userService.delete(userName);
+		return Response.ok().build();
 	}
 
 	@GET
@@ -131,14 +99,7 @@ public class UsersController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response getBlogs(@PathParam("username") String username) {
-		try {
-			// TODO implementation
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		return Response.ok().build();
 	}
 
 	@GET
@@ -146,33 +107,21 @@ public class UsersController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@JwtTokenExpected
 	public Response getComments(@PathParam("username") String username) {
-		try {
-			// TODO implementation
-			return Response.ok().build();
-		} catch (DataNotFoundException dnfe) {
-			return Response.status(Response.Status.NO_CONTENT).build();
-		} catch (BlogException be) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
+		return Response.ok().build();
 	}
 
 	@POST
 	@Path("/authenticateUser") // used for authenticating user
 	public Response authenticateUser(User user) {
-		try {
-			logger.info("#### login/password : " + user.getUserName() + "/" + user.getPassword());
-			// Authenticate the user using the credentials provided
-			userService.authenticate(user.getUserName(), user.getPassword());
+		logger.info("#### login/password : " + user.getUserName() + "/" + user.getPassword());
+		// Authenticate the user using the credentials provided
+		userService.authenticate(user.getUserName(), user.getPassword());
 
-			// Issue a token for the user
-			String token = issueToken(user.getUserName());
+		// Issue a token for the user
+		String token = issueToken(user.getUserName());
 
-			// Return the token on the response
-			return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
-
-		} catch (Exception e) {
-			return Response.status(UNAUTHORIZED).build();
-		}
+		// Return the token on the response
+		return Response.ok().header(AUTHORIZATION, "Bearer " + token).build();
 	}
 
 	private String issueToken(String userId) {
