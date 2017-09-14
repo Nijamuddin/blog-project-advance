@@ -132,6 +132,36 @@ function getComments(blogId, callback) {
     })
 }
 
+function signupUser(signupFirstName, signupLastName, signupEMail, signupUserName, signupPassword, callback) {
+    var url = URLBase + "public/users";
+    var data = {
+        userName: signupUserName,
+        password: signupPassword,
+        firstName: signupFirstName,
+        lastName: signupLastName,
+        emailId: signupEMail
+    };
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        complete: function(jqXHR, textStatus) {
+            switch (jqXHR.status) {
+                case 200:
+                case 201:
+                    callback(jqXHR.getResponseHeader("Authorization"));
+                    break;
+                default:
+                    callback(null);
+                    break;
+            }
+        }
+    });
+}
+
 function authenticateUser(username, password, callback) {
     var url = URLBase + "public/users/authenticateUser";
     var data = {
@@ -227,5 +257,6 @@ module.exports = {
     getNextBlogUrl: getNextBlogUrl,
     getBlogUrl: getBlogUrl,
     createBlog: createBlog,
-    getBlogsAuthored: getBlogsAuthored
+    getBlogsAuthored: getBlogsAuthored,
+    signupUser: signupUser
 };

@@ -15,8 +15,44 @@ class Signup extends React.Component {
         this.state = {
             store: props.store
         };
+        
+        this.signup = this.signup.bind(this);
+        this.resetInput = this.resetInput.bind(this);
+        this.resetInput();
     }
 
+	resetInput() {
+        $('#appSignupFirstName').val("");
+        $('#appSignupLastName').val("");
+        $('#appSignupEMail').val("");
+        $('#appSignupUserName').val("");
+        $('#appSignupPassword').val("");
+    }
+    
+	signup() {
+		var signupFirstName = $('#appSignupFirstName').val();
+        var signupLastName = $('#appSignupLastName').val();
+        var signupEMail = $('#appSignupEMail').val();
+        var signupUserName = $('#appSignupUserName').val();
+        var signupPassword = $('#appSignupPassword').val();
+        if ((signupFirstName.length > 0) && 
+            (signupPassword.length > 0)){
+            Backend.signupUser(signupFirstName, signupLastName, signupEMail, signupUserName, signupPassword, (authorization) => {
+                if (authorization !== null) {
+                    Cookie.store("TOKEN", authorization);
+                    Cookie.store("USER", signupUserName);
+                    State.emit(this.state.store, 'LOGGED_IN', null);
+                }
+                else {
+                    // TODO: need error handline
+                    this.resetInput();
+                }
+            });
+        }else{
+            this.resetInput();
+        }
+	}
+	
     render() {
         return (
             <div id="appSignup" className="container-fluid text-center">
@@ -42,10 +78,10 @@ class Signup extends React.Component {
                             </div>
                             <div className="form-group">
                                 <div className="col-md-6">
-                                    <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appSignupCreate">Create</button>
+                                    <Link to="/cmad-blog-project-advance/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appSignupCreate" onClick={() => {this.signup()}}>Create</button></Link>
                                 </div>
                                 <div className="col-md-6">
-                                    <Link to="/cmad-blog-project-advance/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appSignupLogin">Cancel</button></Link>
+                                    <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appSignupLogin" onClick={() => this.resetInput()}>Cancel</button>
                                 </div>
                             </div>
                         </form>
