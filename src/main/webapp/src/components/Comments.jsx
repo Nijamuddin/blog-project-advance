@@ -16,18 +16,16 @@ class Comments extends React.Component {
         // TODO: set the delete button depending on input authorization code
         this.state = {
             store: props.store,
-            commentlist: [
-                {
-                    commentId: 1,
-                    content: "This is a nice blog.",
-                    userName: "GuruVinayak P",
-                    timeStamp: "Now",
-                    upvotes: 1,
-                    downvotes: 0
-                }
-            ]
+            commentlist: []
         };
         this.renderComment = this.renderComment.bind(this);
+
+        var query = require('query-string').parse(location.search);
+        Backend.getComments(query.blogId, (comments) => {
+            this.setState({
+                commentlist: comments
+            });
+        });
     }
 
     renderComment(comment, index) {
@@ -37,8 +35,8 @@ class Comments extends React.Component {
                 <div className="col-md-8">
                     <div className="w3-card-4">
                         <div className="w3-container text-justify">
-                            <h6>Posted by <i><b>{comment.userName}</b></i> on <i>{comment.timeStamp}</i></h6>
-                            {comment.content}
+                            <h6>Posted by <i><b>{comment.author}</b></i> on <i>{Date(comment.lastUpdatedOn)}</i></h6>
+                            {comment.commentText}
                         </div>
 
                         <footer className="w3-container w3-light-gray">
@@ -48,10 +46,10 @@ class Comments extends React.Component {
                                 </div>
                                 <div className="col-md-2"></div>
                                 <div className="col-md-2">
-                                    <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-up"></span> <span className="badge">{comment.upvotes}</span></button>
+                                    <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-up"></span> <span className="badge">{comment.upVote}</span></button>
                                 </div>
                                 <div className="col-md-2">
-                                    <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-down"></span> <span className="badge">{comment.downvotes}</span></button>
+                                    <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue"><span className="glyphicon glyphicon-thumbs-down"></span> <span className="badge">{comment.downVote}</span></button>
                                 </div>
                             </div>
                         </footer>
