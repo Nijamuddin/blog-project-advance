@@ -132,6 +132,31 @@ function getComments(blogId, callback) {
     })
 }
 
+function createComment(commentText, author, blogId, auth, callback) {
+    var url = URLBase + "public/blogs/" + blogId + "/comments";
+    var comments = {
+        "commentText": commentText,
+        "upVote": 0,
+        "downVote": 0,
+        "author": author,
+        "blogId": blogId
+    };
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: JSON.stringify(comments),
+        dataType: "json",
+        headers: {
+            "Authorization": auth
+        },
+        contentType: "application/json; charset=utf-8",
+        complete: function(jqXHR, textStatus) {
+            callback(jqXHR.status);
+        }
+    });
+}
+
 function signupUser(signupFirstName, signupLastName, signupEMail, signupUserName, signupPassword, callback) {
     var url = URLBase + "public/users";
     var data = {
@@ -258,5 +283,6 @@ module.exports = {
     getBlogUrl: getBlogUrl,
     createBlog: createBlog,
     getBlogsAuthored: getBlogsAuthored,
-    signupUser: signupUser
+    signupUser: signupUser,
+    createComment: createComment
 };

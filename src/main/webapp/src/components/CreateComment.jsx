@@ -2,7 +2,8 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link,
+  browserHistory
 } from 'react-router-dom';
 
 import * as Backend from '../script/backend.js';
@@ -15,6 +16,24 @@ class CreateComment extends React.Component {
         this.state = {
             store: props.store
         };
+        
+        this.postComment = this.postComment.bind(this);
+        this.renderPost = this.renderPost.bind(this);
+    }
+
+    postComment() {
+        var query = require('query-string').parse(location.search);
+        Backend.createComment($("#appCreateCommentContent").val(), Cookie.get("USER"), query.blogId, Cookie.get("TOKEN"), (status) => {
+        })
+    }
+
+    renderPost() {
+        var query = require('query-string').parse(location.search); 
+        return (
+            <Link to={`/cmad-blog-project-advance/blogs`}>
+                <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateCommentPost" onClick={() => this.postComment()}>Post</button>
+            </Link>
+        );
     }
 
     render() {
@@ -30,7 +49,7 @@ class CreateComment extends React.Component {
                             </div>
                             <div className="form-group col-md-12"></div>
                             <div className="col-md-6">
-                                <button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateCommentPost">Post</button>
+                                {this.renderPost()}
                             </div>
                             <div className="col-md-6">
                                 <Link to="/cmad-blog-project-advance/"><button type="button" className="w3-btn w3-block w3-black w3-hover-blue btn-default" id="appCreateCommentCancel">Cancel</button></Link>

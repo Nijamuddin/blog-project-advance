@@ -19,6 +19,7 @@ class Comments extends React.Component {
             commentlist: []
         };
         this.renderComment = this.renderComment.bind(this);
+        this.renderDelete = this.renderDelete.bind(this);
 
         var query = require('query-string').parse(location.search);
         Backend.getComments(query.blogId, (comments) => {
@@ -26,6 +27,19 @@ class Comments extends React.Component {
                 commentlist: comments
             });
         });
+    }
+
+    renderDelete(blog) {
+        if (State.get(this.state.store) === State.LoggedIn) {
+            return (
+                <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue btn-default" id="appCommentsDelete{index}">Delete</button>
+            );
+        }
+        else {
+            return (
+                <div></div>
+            );
+        }
     }
 
     renderComment(comment, index) {
@@ -42,7 +56,7 @@ class Comments extends React.Component {
                         <footer className="w3-container w3-light-gray">
                             <div className="row">
                                 <div className="col-md-6">
-                                    <button type="button" className="w3-btn w3-block w3-light-gray w3-hover-blue btn-default" id="appCommentsDelete{index}">Delete</button>
+                                    {this.renderDelete}
                                 </div>
                                 <div className="col-md-2"></div>
                                 <div className="col-md-2">

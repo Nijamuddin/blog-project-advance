@@ -60,6 +60,26 @@ def create_blog( auth, title, blogContent, category, author ):
     else:
         return False
 
+def create_comment( auth, comment, blogId, author ):
+    headers = { 'Content-Type': 'application/json' }
+    headers['authorization'] = auth
+    url = "{0}/public/blogs/{1}/comments".format( baseUrl, blogId )
+    data = {}
+    data['commentText'] = comment;
+    data['upVote'] = 0;
+    data['downVote'] = 0;
+    data['author'] = author;
+    data['blogId'] = blogId;
+
+    res = requests.post( url, data=json.dumps(data), headers=headers )
+    print("API create_comment response ", res.status_code)
+
+    if (res.status_code == 200):
+        return True
+    else:
+        return False
+
+
 def read_input_data(csv_path):
     with open(csv_path, "rb") as file_obj:
         reader = csv.reader(file_obj)
@@ -70,5 +90,9 @@ def read_input_data(csv_path):
                 auth = authenticate_user( row[1], row[2] )
                 if (auth != None):
                     create_blog( auth, row[3], row[4], row[5], row[1] )
+            elif (row[0] == 'create_comment'):
+                auth = authenticate_user( row[1], row[2] )
+                if (auth != None):
+                    create_comment( auth, row[3], row[4], row[5] )
 
 read_input_data('blog.csv')
