@@ -56,7 +56,7 @@ class Comments extends React.Component {
                         <footer className="w3-container w3-light-gray">
                             <div className="row">
                                 <div className="col-md-6">
-                                    {this.renderDelete}
+                                    {this.renderDelete()}
                                 </div>
                                 <div className="col-md-2"></div>
                                 <div className="col-md-2">
